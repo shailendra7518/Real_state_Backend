@@ -1,6 +1,6 @@
 const { json } = require("express");
 const UserModel = require("../Models/user.model");
-
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { createCustomError, errorHandler } = require("../utils/errorHandler");
@@ -92,7 +92,7 @@ const authController = {
       }
 
       // Generate a token
-      const token = jwt.sign({ id: user._id }, "secret_key", {
+      const token = jwt.sign({ id: user._id },process.env.JWT_SECRET_KEY, {
         expiresIn: "1h",
       }); // Change 'secret_key' to your own secret
 
