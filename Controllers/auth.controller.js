@@ -62,9 +62,10 @@ const authController = {
   },
   signUser: async (req, res, next) => {
     try {
-      const { username, password } = req.body;
+      const { email, password } = req.body;
       // Validate username and password
-      if (!username || !password) {
+      
+      if (!email || !password) {
         return res.json({
           status: 400,
           message: "Username and password are required",
@@ -72,7 +73,7 @@ const authController = {
       }
 
       // Check if user with provided username exists
-      const user = await UserModel.findOne({ username });
+      const user = await UserModel.findOne({ email });
 
       if (!user) {
         return res.json({
@@ -96,7 +97,9 @@ const authController = {
         expiresIn: "1h",
       }); // Change 'secret_key' to your own secret
 
-      res.json({ status: 201, message: "Login successful", user, token });
+      res
+        .cookie("token", token, { httpOnly: true})
+        .json({ status: 201, message: "Login successful", user, token });
     } catch (error) {
       next(error);
       //    const customError = createCustomError("Custom error message", 400);
