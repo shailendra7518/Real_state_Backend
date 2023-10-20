@@ -3,14 +3,19 @@ const express = require("express");
 const connectDB = require('./Config/database')
 
 const config = require("./Config/config");
-const userRoutes = require("./Routes/user.routes");
+const userRoutes = require("./Routes/user.route");
+const authRoutes = require("./Routes/auth.route");
 require("dotenv").config();
 
 
 // take app from express package
 const app = express();
+// add json
+app.use(express.json())
 // end point for users
-app.use("/users", userRoutes);
+
+app.use("/api/auth", authRoutes);
+app.use("/api/users", userRoutes);
 
 
 // Connect to the database
