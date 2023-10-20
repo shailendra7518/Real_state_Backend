@@ -12,22 +12,18 @@ const authController = {
 
       // Validate username, email, and password
       if (!username || !email || !password) {
-        return res
-          .status(400)
-          .json({ message: "Username, email, and password are required" });
+        return res.json({status:400, message: "Username, email, and password are required" });
       }
 
       if (password.length < 6) {
-        return res
-          .status(400)
-          .json({ message: "Password must be at least 6 characters long" });
+        return res.json({status:400, message: "Password must be at least 6 characters long" });
       }
 
       // Check if email format is valid
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(email)) {
-        return res.status(400).json({ message: "Invalid email address" });
+        return res.json({status:400, message: "Invalid email address" });
       }
 
       // Check if username or email already exists
@@ -36,9 +32,7 @@ const authController = {
       });
 
       if (existingUser) {
-        return res
-          .status(400)
-          .json({ message: "Username or email is already taken" });
+        return res.json({status:400, message: "Username or email is already taken" });
       }
 
       // Hash the password
@@ -52,7 +46,7 @@ const authController = {
       });
       await newUser.save();
 
-      res.json({ message: "Signup successful", user: newUser });
+      res.json({status:200, message: "Signup successful", user: newUser });
     } catch (error) {
       next(error);
     }
