@@ -3,7 +3,7 @@ const UserModel = require("../Models/user.model");
 
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const {createCustomError, errorHandler } = require("../utils/errorHandler");
+const { createCustomError, errorHandler } = require("../utils/errorHandler");
 
 const authController = {
   signupUser: async (req, res, next) => {
@@ -12,18 +12,24 @@ const authController = {
 
       // Validate username, email, and password
       if (!username || !email || !password) {
-        return res.json({status:400, message: "Username, email, and password are required" });
+        return res.json({
+          status: 400,
+          message: "Username, email, and password are required",
+        });
       }
 
       if (password.length < 6) {
-        return res.json({status:400, message: "Password must be at least 6 characters long" });
+        return res.json({
+          status: 400,
+          message: "Password must be at least 6 characters long",
+        });
       }
 
       // Check if email format is valid
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
       if (!emailRegex.test(email)) {
-        return res.json({status:400, message: "Invalid email address" });
+        return res.json({ status: 400, message: "Invalid email address" });
       }
 
       // Check if username or email already exists
@@ -32,7 +38,10 @@ const authController = {
       });
 
       if (existingUser) {
-        return res.json({status:400, message: "Username or email is already taken" });
+        return res.json({
+          status: 400,
+          message: "Username or email is already taken",
+        });
       }
 
       // Hash the password
@@ -46,37 +55,40 @@ const authController = {
       });
       await newUser.save();
 
-      res.json({status:200, message: "Signup successful", user: newUser });
+      res.json({ status: 200, message: "Signup successful", user: newUser });
     } catch (error) {
       next(error);
     }
   },
-  signUser: async (req, res,next) => {
+  signUser: async (req, res, next) => {
     try {
       const { username, password } = req.body;
       // Validate username and password
       if (!username || !password) {
-        return res
-          .status(400)
-          .json({ message: "Username and password are required" });
+        return res.json({
+          status: 400,
+          message: "Username and password are required",
+        });
       }
 
       // Check if user with provided username exists
       const user = await UserModel.findOne({ username });
 
       if (!user) {
-        return res
-          .status(401)
-          .json({ message: "Invalid username or password" });
+        return res.json({
+          status: 401,
+          message: "Invalid username or password",
+        });
       }
 
       // Compare the provided password with the hashed password
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
-        return res
-          .status(401)
-          .json({ message: "Invalid username or password" });
+        return res.json({
+          status: 401,
+          message: "Invalid username or password",
+        });
       }
 
       // Generate a token
@@ -84,11 +96,11 @@ const authController = {
         expiresIn: "1h",
       }); // Change 'secret_key' to your own secret
 
-      res.json({ message: "Login successful", user, token });
+      res.json({ status: 201, message: "Login successful", user, token });
     } catch (error) {
-        next(error)
-    //    const customError = createCustomError("Custom error message", 400);
-    //    next(errorHandler("Custom error message", 550));
+      next(error);
+      //    const customError = createCustomError("Custom error message", 400);
+      //    next(errorHandler("Custom error message", 550));
     }
   },
 
