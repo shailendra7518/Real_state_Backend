@@ -5,6 +5,7 @@ const connectDB = require('./Config/database')
 const config = require("./Config/config");
 const userRoutes = require("./Routes/user.route");
 const authRoutes = require("./Routes/auth.route");
+const errorMiddleware=require("./Middleware/error.middleware")
 require("dotenv").config();
 
 
@@ -16,6 +17,7 @@ app.use(express.json())
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use(errorMiddleware);
 
 
 // Connect to the database
