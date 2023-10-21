@@ -106,7 +106,48 @@ const authController = {
       //    next(errorHandler("Custom error message", 550));
     }
   },
+  gooleAuth: async (req,res,next) => {
+    try {
+      // check if the user is already avalible
+      const user= await UserModel.findOne({email:req.body.email})
+      if (user) {
+              // Generate a token
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "1h",
+      });
+        
+        res.cookie("acess-token" , token,{ maxAge: 1000 * 60 * 10, httpOnly: true ,secure:false,path:'/',domain:"localhost" })
+        .json({stats:201,message:'user logged in successfully',user,token})
+        
+      } else {
+         // genrate a random passowrd here;
+        const generatedPassword = Math.random.toString(36).slice(-8);
 
+        // hash the password
+        const hashedPassword = await bcrypt.hash(generatedPassword, 10);
+        // creating new user 
+        const myUser = new UserModel({
+          username: req.body.username.split(" ").join("").toLowerCase(),
+          email: req.body.email,
+          password: hashedPassword,
+          avatar:req.body.photo
+        });
+         // save the user
+           await myUser.save();
+         
+          const token = jwt.sign({ id: myUser._id }, process.env.JWT_SECRET_KEY, {
+            expiresIn: "1h",
+          });
+        
+         res.json({ stats: 201, message: "user logged in successfully" ,user:myUser,token:token});
+        
+        
+      }
+    } catch (err) {
+      console.log(err)
+      next(err)
+    }
+  }
   // Add more user-related controller functions as needed
 };
 
