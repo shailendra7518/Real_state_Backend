@@ -64,7 +64,7 @@ const authController = {
     try {
       const { email, password } = req.body;
       // Validate username and password
-      
+
       if (!email || !password) {
         return res.json({
           status: 400,
@@ -93,12 +93,12 @@ const authController = {
       }
 
       // Generate a token
-      const token = jwt.sign({ id: user._id },process.env.JWT_SECRET_KEY, {
+      const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
         expiresIn: "1h",
       }); // Change 'secret_key' to your own secret
-
+       
       res
-        .cookie("token", token, { httpOnly: true})
+        .cookie("acess-token" , token,{ maxAge: 1000 * 60 * 10, httpOnly: true ,secure:false,path:'/',domain:"localhost" })
         .json({ status: 201, message: "Login successful", user, token });
     } catch (error) {
       next(error);
