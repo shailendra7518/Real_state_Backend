@@ -8,6 +8,7 @@ router.post("/signup", authController.signupUser);
 // Route for logging in
 router.post("/signin", authController.signUser);
 
+router.post("/google", authController.gooleAuth);
 
 // Add more routes for user actions as needed
 
