@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const config = require("./Config/config");
 const userRoutes = require("./Routes/user.route");
 const authRoutes = require("./Routes/auth.route");
+const listingRoutes=require("./Routes/listing.route")
 const errorMiddleware = require("./Middleware/error.middleware")
 const cors = require("cors");
 require("dotenv").config();
@@ -23,6 +24,7 @@ app.use(express.json())
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/listing",listingRoutes)
 app.use(errorMiddleware);
 
 
