@@ -1,5 +1,7 @@
 const { json } = require("express");
 const UserModel = require("../Models/user.model");
+const jwt = require("jsonwebtoken");
+require("dotenv").config();
 const bcrypt = require("bcrypt");
 const userController = {
   getUserById: async (req, res) => {
@@ -12,7 +14,7 @@ const userController = {
   },
   updateUser: async (req, res, next) => {
  
-  
+  console.log(req.body,req.params)
     if (req.user.id !== req.params.id) {
     
       return next("you can update only your account", 401);
@@ -44,9 +46,12 @@ const userController = {
       if (!updatedUser) {
         return res.status(404).json({ message: "User not found" });
       }
+       const token = jwt.sign({ id: updatedUser._id }, process.env.JWT_SECRET_KEY, {
+         expiresIn: "1h",
+       }); 
 
       res
-        .json({status:200, message: "User updated successfully", user: updatedUser });
+        .json({status:200, message: "User updated successfully", user: updatedUser,token:token });
     } catch (error) {
       next(error);
     }

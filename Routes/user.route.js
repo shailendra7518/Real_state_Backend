@@ -7,7 +7,7 @@ const router = express.Router();
 
 // Route for getting user by ID
 router.get("/:id", userController.getUserById);
-router.post("/update/:id",verifyToken, userController.updateUser);
+router.patch("/update/:id",verifyToken, userController.updateUser);
 
 // Add more routes for user actions as needed
 
