@@ -74,10 +74,10 @@ const userController = {
     }
   },
   getUserListing: async (req,res,next) => {
-    if (req.body.id === req.params.id) {
+    if (req.headers.id === req.params.id) {
       try {
         const listings = await Listing.find({ userRef: req.params.id });
-        res.status(200).json({sataus:200,message:"request successfull",listings})
+        res.status(200).json({status:200,message:"request successfull",listings})
         
       } catch (error) {
         next(error)
