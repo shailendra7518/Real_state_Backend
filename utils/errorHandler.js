@@ -1,4 +1,5 @@
 const createCustomError = (message, statusCode) => {
+  console.log(message,statusCode)
   const error = new Error(message);
   error.statusCode = statusCode;
   return error;
@@ -7,8 +8,8 @@ const createCustomError = (message, statusCode) => {
 const errorHandler = (err, req, res, next) => {
   const statusCode = err.statusCode || 500;
   const message = err.message || "Internal Server Error";
-
-  res.status(statusCode).json({
+ console.log("check here")
+return  res.status(statusCode).json({
     success: false,
     statusCode,
     message,
