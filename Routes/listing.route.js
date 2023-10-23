@@ -7,6 +7,8 @@ const router = express.Router();
 // Route for creating a new list
 router.post("/create",verifyToken,listingController.createListing);
 
+// Route for deleting a list
+router.delete("/delete/:id",verifyToken,listingController.deleteListing);
 
 // Add more routes for user actions as needed
 

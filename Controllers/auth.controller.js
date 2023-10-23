@@ -94,7 +94,7 @@ const authController = {
 
       // Generate a token
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
+        expiresIn: "100h",
       }); // Change 'secret_key' to your own secret
        
       res
@@ -113,7 +113,7 @@ const authController = {
       if (user) {
               // Generate a token
       const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1h",
+        expiresIn: "100h",
       });
         
         res.cookie("acess-token" , token,{ maxAge: 1000 * 60 * 10, httpOnly: true ,secure:false,path:'/',domain:"localhost" })
@@ -136,7 +136,7 @@ const authController = {
            await myUser.save();
          
           const token = jwt.sign({ id: myUser._id }, process.env.JWT_SECRET_KEY, {
-            expiresIn: "1h",
+            expiresIn: "100h",
           });
         
          res.json({ stats: 201, message: "user logged in successfully" ,user:myUser,token:token});
