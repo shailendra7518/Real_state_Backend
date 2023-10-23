@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const bcrypt = require("bcrypt");
 const { errorHandler } = require("../utils/errorHandler");
+const Listing = require("../Models/listing.model");
 const userController = {
   getUserById: async (req, res) => {
     try {
@@ -72,6 +73,20 @@ const userController = {
       res.json({ status:500,message: error.message });
     }
   },
+  getUserListing: async (req,res,next) => {
+    if (req.body.id === req.params.id) {
+      try {
+        const listings = await Listing.find({ userRef: req.params.id });
+        res.status(200).json({sataus:200,message:"request successfull",listings})
+        
+      } catch (error) {
+        next(error)
+      }
+    } else {
+      return next(errorHandler("you can viwe your own listings",401))
+    }
+   
+  }
 
   // Add more user-related controller functions as needed
 };
