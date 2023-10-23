@@ -11,7 +11,7 @@ router.post("/create",verifyToken,listingController.createListing);
 router.delete("/delete/:id",verifyToken,listingController.deleteListing);
 
 // route for editing a list
-router.patch("/update/:id", listingController.updateListing);
+router.patch("/update/:id",verifyToken, listingController.updateListing);
 // Add more routes for user actions as needed
 
 module.exports = router;
