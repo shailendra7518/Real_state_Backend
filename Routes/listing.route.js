@@ -5,6 +5,9 @@ const verifyToken = require("../utils/verifytoken");
 const router = express.Router();
 
 // Route for creating a new list
+router.get("/get/:id",listingController.getListing);
+
+// Route for creating a new list
 router.post("/create",verifyToken,listingController.createListing);
 
 // Route for deleting a list

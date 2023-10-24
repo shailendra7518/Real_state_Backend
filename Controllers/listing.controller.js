@@ -35,9 +35,8 @@ const listingCongroller = {
         }
     },
     updateListing: async (req, res, next) => {
-        console.log(req.headers.id==req.params.id)
+        // console.log(req.headers.id==req.params.id)
         const listing = await Listing.findById(req.params.id);
-         console.log("listing",listing)
         if (!listing) {
             // return next(errorHandler(createCustomError(404,"Listing not found")))
            return next("list not found")
@@ -50,10 +49,22 @@ const listingCongroller = {
         }
         try {
             const updatedlisting = await Listing.findByIdAndUpdate(req.params.id, req.body, { new: true });
-
-            res.status(200).json({status:200,message:"listing updated successfully",updatedlisting})
+             
+           res.status(200).json({status:200,message:"listing updated successfully",updatedlisting})
         } catch (error) {
             next(error)
+        }
+    },
+    getListing: async (req,res,next)=>{
+        try {
+            const listing = await Listing.findById(req.params.id)
+            if (!listing) {
+                return next("Listing not found")
+            }
+            res.status(200).json({ status: 200, message: 'success', listing });
+            
+        } catch (error) {
+            next(error);
         }
     }
 
