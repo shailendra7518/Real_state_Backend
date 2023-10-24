@@ -4,8 +4,13 @@ const verifyToken = require("../utils/verifytoken");
 
 const router = express.Router();
 
+
+// to get all listing on search
+router.get("/get", listingController.getListings);
+
 // Route for creating a new list
-router.get("/get/:id",listingController.getListing);
+router.get("/get/:id",listingController.getListingById);
+
 
 // Route for creating a new list
 router.post("/create",verifyToken,listingController.createListing);
