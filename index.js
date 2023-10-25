@@ -9,7 +9,10 @@ const listingRoutes=require("./Routes/listing.route")
 const errorMiddleware = require("./Middleware/error.middleware")
 const cors = require("cors");
 require("dotenv").config();
+ 
+const path = require('path')
 
+// const __dirname = path.resolve();
 
 // take app from express package
 const app = express();
@@ -24,8 +27,17 @@ app.use(express.json())
 
 app.use("/api/auth", authRoutes);
 app.use("/api/users", userRoutes);
-app.use("/api/listing",listingRoutes)
+app.use("/api/listing", listingRoutes)
+
+app.use(express.static(path.join(__dirname, "/client/dist")));
+
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "client", "dist", "index.html"));
+});
+
+
 app.use(errorMiddleware);
+
 
 
 // Connect to the database
