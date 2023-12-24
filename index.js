@@ -4,6 +4,7 @@ const connectDB = require('./Config/database')
 const cookieParser = require("cookie-parser");
 const userRoutes = require("./Routes/user.route");
 const authRoutes = require("./Routes/auth.route");
+const authRoutesOxyzen = require("./Routes/oxyzen/auth.route");
 const listingRoutes=require("./Routes/listing.route")
 const errorMiddleware = require("./Middleware/error.middleware")
 const cors = require("cors");
@@ -23,8 +24,9 @@ app.use(cors());
 app.use(express.json())
 
 // end point for users
-
+app.use("/api/oxyzen/auth", authRoutesOxyzen);
 app.use("/api/auth", authRoutes);
+
 app.use("/api/users", userRoutes);
 app.use("/api/listing", listingRoutes)
 app.use(errorMiddleware);
@@ -33,7 +35,7 @@ app.use(errorMiddleware);
 
 // Connect to the database
 // write listen method to connect from database backend
-const PORT = process.env.PORT || 3000
+const PORT = process.env.PORT || 8080
 
 app.listen(PORT, async () => {
   try {
